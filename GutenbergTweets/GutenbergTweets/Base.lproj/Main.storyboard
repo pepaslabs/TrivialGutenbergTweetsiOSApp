@@ -41,18 +41,25 @@
                         <constraints>
                             <constraint firstItem="nwV-hL-LQM" firstAttribute="top" secondItem="GxN-XC-AAP" secondAttribute="bottom" constant="8" id="2fe-7P-EqX"/>
                             <constraint firstItem="EO0-td-bJL" firstAttribute="top" secondItem="y3c-jy-aDJ" secondAttribute="bottom" constant="8" id="7Hf-Mf-1il"/>
-                            <constraint firstAttribute="trailingMargin" secondItem="nwV-hL-LQM" secondAttribute="trailing" id="KPL-08-eTf"/>
+                            <constraint firstItem="nwV-hL-LQM" firstAttribute="trailing" secondItem="EO0-td-bJL" secondAttribute="trailing" id="IYz-XO-jaY"/>
+                            <constraint firstItem="nwV-hL-LQM" firstAttribute="leading" secondItem="EO0-td-bJL" secondAttribute="leading" id="VSn-q5-JSW"/>
+                            <constraint firstItem="wfy-db-euE" firstAttribute="top" relation="greaterThanOrEqual" secondItem="nwV-hL-LQM" secondAttribute="bottom" constant="8" id="VbQ-kx-hLJ"/>
                             <constraint firstItem="EO0-td-bJL" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leadingMargin" id="XEe-Bp-qwu"/>
                             <constraint firstItem="GxN-XC-AAP" firstAttribute="top" secondItem="EO0-td-bJL" secondAttribute="bottom" constant="8" id="fmC-sr-sgZ"/>
-                            <constraint firstAttribute="trailingMargin" secondItem="GxN-XC-AAP" secondAttribute="trailing" id="hEc-7a-cqp"/>
                             <constraint firstAttribute="trailingMargin" secondItem="EO0-td-bJL" secondAttribute="trailing" id="ht3-Gc-uST"/>
-                            <constraint firstItem="nwV-hL-LQM" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leadingMargin" id="kKT-Mf-IlB"/>
-                            <constraint firstItem="GxN-XC-AAP" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leadingMargin" id="rcD-9x-dfK"/>
+                            <constraint firstItem="GxN-XC-AAP" firstAttribute="trailing" secondItem="EO0-td-bJL" secondAttribute="trailing" id="qUL-99-nJg"/>
+                            <constraint firstItem="GxN-XC-AAP" firstAttribute="leading" secondItem="EO0-td-bJL" secondAttribute="leading" id="sHA-Sx-iYB"/>
                         </constraints>
                         <connections>
                             <outlet property="bodyLabel" destination="nwV-hL-LQM" id="bx1-pc-CVE"/>
+                            <outlet property="bottomMarginConstraint" destination="VbQ-kx-hLJ" id="8yR-IF-IAv"/>
                             <outlet property="dateLabel" destination="GxN-XC-AAP" id="0H2-0r-QXd"/>
+                            <outlet property="leadingMarginConstraint" destination="XEe-Bp-qwu" id="wW3-Nr-Vkc"/>
                             <outlet property="nameLabel" destination="EO0-td-bJL" id="lUv-ad-EUZ"/>
+                            <outlet property="topMarginConstraint" destination="7Hf-Mf-1il" id="mFk-Ez-Vkx"/>
+                            <outlet property="trailingMarginConstraint" destination="ht3-Gc-uST" id="BFU-5s-n36"/>
+                            <outletCollection property="verticalSpacingConstraints" destination="fmC-sr-sgZ" collectionClass="NSMutableArray" id="TsG-J7-gab"/>
+                            <outletCollection property="verticalSpacingConstraints" destination="2fe-7P-EqX" collectionClass="NSMutableArray" id="Sg8-Av-Qp9"/>
                         </connections>
                     </view>
                     <connections>
