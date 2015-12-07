@@ -18,6 +18,7 @@
 		2B355E1F1C1462690078E24A /* RxCocoa.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 2B355E1A1C1462690078E24A /* RxCocoa.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		2B355E201C1462690078E24A /* RxSwift.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2B355E1B1C1462690078E24A /* RxSwift.framework */; };
 		2B355E211C1462690078E24A /* RxSwift.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 2B355E1B1C1462690078E24A /* RxSwift.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		2B9E71CD1C14E5C80013E422 /* StyleModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B9E71CC1C14E5C80013E422 /* StyleModels.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -47,6 +48,7 @@
 		2B355E191C1462690078E24A /* RxBlocking.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = RxBlocking.framework; path = Carthage/Build/iOS/RxBlocking.framework; sourceTree = "<group>"; };
 		2B355E1A1C1462690078E24A /* RxCocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = RxCocoa.framework; path = Carthage/Build/iOS/RxCocoa.framework; sourceTree = "<group>"; };
 		2B355E1B1C1462690078E24A /* RxSwift.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = RxSwift.framework; path = Carthage/Build/iOS/RxSwift.framework; sourceTree = "<group>"; };
+		2B9E71CC1C14E5C80013E422 /* StyleModels.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StyleModels.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -87,6 +89,7 @@
 			children = (
 				2B355E071C14616D0078E24A /* AppDelegate.swift */,
 				2B355E091C14616D0078E24A /* TweetViewController.swift */,
+				2B9E71CC1C14E5C80013E422 /* StyleModels.swift */,
 				2B355E0B1C14616D0078E24A /* Main.storyboard */,
 				2B355E0E1C14616D0078E24A /* Assets.xcassets */,
 				2B355E101C14616D0078E24A /* LaunchScreen.storyboard */,
@@ -167,6 +170,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				2B9E71CD1C14E5C80013E422 /* StyleModels.swift in Sources */,
 				2B355E0A1C14616D0078E24A /* TweetViewController.swift in Sources */,
 				2B355E081C14616D0078E24A /* AppDelegate.swift in Sources */,
 			);

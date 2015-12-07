@@ -8,49 +8,30 @@
 
 import UIKit
 
-protocol UIViewStyleModelProtocol
-{
-    var backgroundColor: UIColor { get }
-}
-
-protocol UILabelStyleModelProtocol: UIViewStyleModelProtocol
-{
-    var font: UIFont { get }
-    var textColor: UIColor { get }
-}
-
-struct UIViewStyleModel: UIViewStyleModelProtocol
-{
-    let backgroundColor: UIColor
-}
-
-struct UILabelStyleModel: UILabelStyleModelProtocol
-{
-    let backgroundColor: UIColor
-    let font: UIFont
-    let textColor: UIColor
-}
-
-extension UIView
-{
-    func applyStyleModel(model: UIViewStyleModelProtocol)
-    {
-        backgroundColor = model.backgroundColor
-    }
-}
-
-extension UILabel
-{
-    func applyStyleModel(model: UILabelStyleModelProtocol)
-    {
-        font = model.font
-        backgroundColor = model.backgroundColor
-        textColor = model.textColor
-    }
-}
-
 class TweetView: UIView
 {
+    // MARK: public interface
+    
+    var layoutModel: LayoutModel = LayoutModel.defaultModel() {
+        didSet {
+            _applyLayoutModel(layoutModel)
+        }
+    }
+    
+    var styleModel: StyleModel = StyleModel.defaultModel() {
+        didSet {
+            _applyStyleModel(styleModel)
+        }
+    }
+    
+    var dataModel: DataModel = DataModel.emptyModel() {
+        didSet {
+            _applyDataModel(dataModel)
+        }
+    }
+    
+    // MARK: implementation internals
+
     @IBOutlet weak var nameLabel: UILabel!
     @IBOutlet weak var dateLabel: UILabel!
     @IBOutlet weak var bodyLabel: UILabel!
@@ -61,20 +42,56 @@ class TweetView: UIView
     @IBOutlet weak var trailingMarginConstraint: NSLayoutConstraint!
 
     @IBOutlet var verticalSpacingConstraints: [NSLayoutConstraint]!
-
-    struct LayoutModel
+    
+    override func updateConstraints()
     {
-        let topMarginConstant: CGFloat = 16
-        let bottomMarginConstant: CGFloat = 8
-        let leadingMarginConstant: CGFloat = 8
-        let trailingMarginConstant: CGFloat = 8
-
-        let verticalSpacingConstant: CGFloat = 8
+        super.updateConstraints()
+        _applyLayoutModel(layoutModel)
     }
     
-    var layoutModel: LayoutModel = LayoutModel() {
-        didSet {
-            _applyLayoutModel(layoutModel)
+    override init(frame: CGRect)
+    {
+        fatalError("programmatic init() not supported.")
+    }
+    
+    required init?(coder aDecoder: NSCoder)
+    {
+        super.init(coder: aDecoder)
+        _bootstrap()
+    }
+    
+    private func _bootstrap()
+    {
+        // unfortunately, sometimes our IBOutlets are still nil at this point,
+        // so we throw this call onto the next runloop:
+        dispatch_async(dispatch_get_main_queue()) { [weak self] () -> Void in
+            if let sself = self {
+                sself._applyDataModel(sself.dataModel)
+                sself._applyStyleModel(sself.styleModel)
+            }
+        }
+    }
+}
+
+extension TweetView
+{
+    struct LayoutModel
+    {
+        let topMarginConstant: CGFloat
+        let bottomMarginConstant: CGFloat
+        let leadingMarginConstant: CGFloat
+        let trailingMarginConstant: CGFloat
+
+        let verticalSpacingConstant: CGFloat
+        
+        static func defaultModel() -> LayoutModel
+        {
+            return LayoutModel(
+                topMarginConstant: 16,
+                bottomMarginConstant: 16,
+                leadingMarginConstant: 8,
+                trailingMarginConstant: 8,
+                verticalSpacingConstant: 8)
         }
     }
     
@@ -90,66 +107,80 @@ class TweetView: UIView
             constraint.constant = model.verticalSpacingConstant
         }
     }
+}
 
-    override func updateConstraints() {
-        super.updateConstraints()
-        _applyLayoutModel(layoutModel)
-    }
-    
+extension TweetView
+{
     struct StyleModel
     {
-        let viewStyle: UIViewStyleModel = UIViewStyleModel(backgroundColor: UIColor.whiteColor())
+        let viewStyle: UIViewStyleModel
+        let nameLabelStyle: UILabelStyleModel
+        let dateLabelStyle: UILabelStyleModel
+        let bodyLabelStyle: UILabelStyleModel
         
-        let nameLabelStyle: UILabelStyleModel = UILabelStyleModel(
-            backgroundColor: UIColor.whiteColor(),
-            font: UIFont.systemFontOfSize(18),
-            textColor: UIColor.darkGrayColor())
-        
-        let dateLabelStyle: UILabelStyleModel = UILabelStyleModel(
-            backgroundColor: UIColor.whiteColor(),
-            font: UIFont.systemFontOfSize(14),
-            textColor: UIColor.darkGrayColor())
-        
-        let bodyLabelStyle: UILabelStyleModel = UILabelStyleModel(
-            backgroundColor: UIColor.whiteColor(),
-            font: UIFont.systemFontOfSize(14),
-            textColor: UIColor.darkGrayColor())
-    }
-    
-    var styleModel: StyleModel = StyleModel() {
-        didSet {
-            _applyStyleModel(styleModel)
+        static func defaultModel() -> StyleModel
+        {
+            let viewStyle: UIViewStyleModel = UIViewStyleModel(backgroundColor: UIColor.whiteColor())
+            
+            let nameLabelStyle: UILabelStyleModel = UILabelStyleModel(
+                backgroundColor: UIColor.whiteColor(),
+                font: UIFont.systemFontOfSize(18),
+                textColor: UIColor.darkGrayColor())
+            
+            let dateLabelStyle: UILabelStyleModel = UILabelStyleModel(
+                backgroundColor: UIColor.whiteColor(),
+                font: UIFont.systemFontOfSize(14),
+                textColor: UIColor.darkGrayColor())
+            
+            let bodyLabelStyle: UILabelStyleModel = UILabelStyleModel(
+                backgroundColor: UIColor.whiteColor(),
+                font: UIFont.systemFontOfSize(14),
+                textColor: UIColor.darkGrayColor())
+            
+            return StyleModel(
+                viewStyle: viewStyle,
+                nameLabelStyle: nameLabelStyle,
+                dateLabelStyle: dateLabelStyle,
+                bodyLabelStyle: bodyLabelStyle)
         }
     }
     
     private func _applyStyleModel(model: StyleModel)
     {
-        applyStyleModel(model.viewStyle)
+        self.applyStyleModel(model.viewStyle)
         
         for (label, model) in [
             (nameLabel, model.nameLabelStyle),
             (dateLabel, model.dateLabelStyle),
-            (bodyLabel, model.bodyLabelStyle),
-            ]
+            (bodyLabel, model.bodyLabelStyle)]
         {
             label.applyStyleModel(model)
         }
     }
-    
-    override init(frame: CGRect) {
-        fatalError("programmatic init() not supported.")
+}
+
+extension TweetView
+{
+    struct DataModel
+    {
+        let nameText: String
+        let dateText: String
+        let bodyText: String
+        
+        static func emptyModel() -> DataModel
+        {
+            return DataModel(
+                nameText: "",
+                dateText: "",
+                bodyText: "")
+        }
     }
     
-    required init?(coder aDecoder: NSCoder) {
-        super.init(coder: aDecoder)
-
-        // unfortunately, sometimes our IBOutlets are still nil at this point,
-        // so we throw this call onto the next runloop:
-        dispatch_async(dispatch_get_main_queue()) { [weak self] () -> Void in
-            if let zelf = self {
-                zelf._applyStyleModel(zelf.styleModel)
-            }
-        }
+    private func _applyDataModel(model: DataModel)
+    {
+        nameLabel.text = model.nameText
+        dateLabel.text = model.dateText
+        bodyLabel.text = model.bodyText
     }
 }
 
@@ -159,9 +190,12 @@ class TweetViewController: UIViewController
     
     override func viewDidLoad() {
         super.viewDidLoad()
+
+        let model = TweetView.DataModel(
+            nameText: "Fred",
+            dateText: "Yesterday",
+            bodyText: "Charlotte had seen them from her husband's room, crossing the road, and immediately running into the other, told the girls what an honour they might expect, adding:  \"I may thank you, Eliza, for this piece of civility.\"")
         
-        tweetView.nameLabel.text = "Fred"
-        tweetView.dateLabel.text = "Yesterday"
-        tweetView.bodyLabel.text = "Charlotte had seen them from her husband's room, crossing the road, and immediately running into the other, told the girls what an honour they might expect, adding:  \"I may thank you, Eliza, for this piece of civility.\""
+        tweetView.dataModel = model
     }
 }
